@@ -1,0 +1,13 @@
+<body>
+    <div>
+        {% for item in data %}
+        <pre>{{ item.name }}</pre>
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{item.id_poke}}.png"/>
+        <p> atk : {{ item.atk }}</p>
+        <p> def : {{ item.defense }}</p>
+        <p> spd : {{ item.speed }}</p>
+        <p> hp : {{ item.hp }}</p>
+        <p> id : {{ item.id_poke }}</p>
+        {% endfor %}
+    </div>
+</body>
