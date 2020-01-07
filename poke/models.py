@@ -1,26 +1,27 @@
 from django.db import models
 import requests
 
-# Create your models here.
-
-class Move(models.Model):
-    id_type = models.IntegerField()
-    name = models.CharField(max_length=50)
-    power = models.IntegerField()
-    type = models.ForeignKey(Type)
-
+# Create your models here
 
 class Type(models.Model):
-    id_type =
+    id_type = models.IntegerField()
+
+class Move(models.Model):
+    id_type = models.IntegerField(null=True)
+    name = models.CharField(max_length=50,null=True)
+    power = models.IntegerField(null=True)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, null=True)
+    damageClass = models.CharField(max_length=15,null=True)
 
 
 class Pokemon(models.Model):
-    speed = models.IntegerField()
-    atk = models.IntegerField()
-    defense = models.IntegerField()
-    hp = models.IntegerField()
-    name = models.CharField(max_length=50)
-    id_poke = models.IntegerField()
+    speed = models.IntegerField(null=True)
+    atk = models.IntegerField(null=True)
+    defense = models.IntegerField(null=True)
+    hp = models.IntegerField(null=True)
+    name = models.CharField(max_length=50,null=True)
+    id_poke = models.IntegerField(null=True)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, null=True)
 
     @classmethod
     def create(cls, nom, prenom, username, email, password):
@@ -29,12 +30,12 @@ class Pokemon(models.Model):
 
     @classmethod
     def createOne(cls, id):
-        if not Pokemon.filter(id_poke=id).exists():
+        if not Pokemon.objects.filter(id_poke=id).exists():
             url = "https://pokeapi.co/api/v2/pokemon/"
 
             poke = Pokemon.create()
             data = requests.get(url + str(id)).json()
-
+            print(url + str(id))
             poke.id = id
             name = data['name']
 
@@ -55,6 +56,10 @@ class Pokemon(models.Model):
         return poke
 
     @classmethod
-    def getList(self, max, min=0):
+    def getList(self, max=151, min=0):
         pokeList = Pokemon.objects.all().filter(id_poke__lte=max)
         return  pokeList
+
+    @classmethod
+    def removeAll(cls):
+        Pokemon.objects.all().delete()

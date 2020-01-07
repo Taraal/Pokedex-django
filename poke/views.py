@@ -4,14 +4,18 @@ import requests
 
 # Create your views here.
 
-def importTwenty(request, max):
-    for i in range(1,max + 1):
-        Pokemon.createOne(i)
+def importTwenty(request):
+    for i in range(1,152):
+        poke = Pokemon.createOne(i)
+    return getAll(request)
+
+def purge(request):
+    Pokemon.removeAll()
     return getAll(request)
 
 
 def getAll(request):
-    pokelist = Pokemon.getList(21)
+    pokelist = Pokemon.getList()
     context = {'data' : pokelist}
     return render(request, "poke/index.html", context)
 
@@ -26,7 +30,7 @@ def fight(request, id1, id2):
             dmg = round(poke1.atk - (poke2.defense/2))
             fight.append(poke1.name + " attaque ! Il inflige " + str(dmg) + " points de dégat")
             poke2.hp = poke2.hp - dmg
-            fight.append(poke2.name + "a désormais " + str(poke2.hp) + " hp")
+            fight.append(poke2.name + " a désormais " + str(poke2.hp) + " hp")
             if poke2.hp <= 0:
                 death = False
         else :
