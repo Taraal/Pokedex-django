@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path('all/', views.getAll, name='getAll'),
-    path('import/', views.importAll),
+    path('import/', views.importTwenty),
     path('fight/<int:id1>/<int:id2>/', views.fight),
     path('purge', views.purge)
 ]

@@ -4,43 +4,22 @@ import requests
 
 # Create your views here.
 
-def importAll(request):
-    """
-    Gets all the Pokemon from the API and stores them locally
-    :return: returns the getAll() method
-    """
+def importTwenty(request):
     for i in range(1,152):
         poke = Pokemon.createOne(i)
     return getAll(request)
 
 def purge(request):
-    """
-    Purges all the local Pokemons
-    """
     Pokemon.removeAll()
     return getAll(request)
 
 
 def getAll(request):
-    """
-    Gets all the pokemon stored locally and shows their stats and sprite
-    """
     pokelist = Pokemon.getList()
     context = {'data' : pokelist}
     return render(request, "poke/index.html", context)
 
 def fight(request, id1, id2):
-    """
-    Automatic implementation of a Pokemon Fight
-    TODO :
-        Add Sprites to both Pokemon
-        Add different attacks
-        Allow the player to choose his attack
-    :param request: entering API request
-    :param id1: First pokemon id (player)
-    :param id2: Second pokemon id (opponent
-    :return:
-    """
     poke1 = Pokemon.objects.get(id_poke=id1)
     poke2 = Pokemon.objects.get(id_poke=id2)
     fight = []
